@@ -1,0 +1,36 @@
+body { margin:0;}
+
+.form_container{
+margin: 0 auto;
+width: 600px;
+padding: 15px;
+}
+
+fieldset{ margin-bottom: 5px; }
+
+.pers_ipt{
+margin-bottom: 5px;
+width: 100%;
+padding: 8px 0px;
+border-radius: 5px;
+}
+
+.accnt_ipt{
+margin-bottom: 5px;
+width: 100%;
+padding: 8px 0px;
+border: none;
+border-bottom: solid;
+border-radius: 5px;
+}
+
+.date_of_birth{
+margin-left: 0px;
+}
+
+
+@media (max-width: 500px){
+.form_container{
+width:100%;
+}
+}
