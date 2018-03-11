@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <html>
 <head>
 <meta name="viewport" content="width="device-width, initial-scale=1.0" />
@@ -7,6 +10,112 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2/1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <body>
+<?php
+$accnt = $fname = $lname = $bday = $gender = $adr = $addr = $city = $state = $zipcode = "";
+$email = $pssd = $pwd = "";
+
+$accntErr = $fnameErr = $lnameErr = $bdayErr = $genderErr = $adrErr = $cityErr = $stateErr = $zipcodeErr = "";
+$emailErr = $pssdErr = $pwdErr = ""; 
+$cnt = 0;
+$servername = "localhost";
+$username = "root";
+$password = "rasp87";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+		
+	if (empty($_POST["fname"])){
+		$fnameErr = "* field is required";
+		if ($cnt > 0){
+			$cnt -= 1;
+		}
+	} else {
+		$fname = test_field($_POST["fname"]);
+		$fnameErr = "";
+		$cnt += 1;
+	}
+	
+	if (empty($_POST["lname"])){
+		$lnameErr = "* field is required";
+		if ($cnt > 0){
+			$cnt -= 1;
+		}
+	} else {
+		$lname = test_field($_POST["lname"]);
+		$lnameErr = "";
+		$cnt += 1;
+	}
+	
+	if (empty($_POST["email"])){
+		$emailErr = "* field is required";
+		if ($cnt > 0){
+			$cnt -= 1;
+		}
+	} else {
+		$email = test_field($_POST["email"]);
+		$emailErr = "";
+		$cnt += 1;
+	}
+	
+	if (empty($_POST["pssd"])){
+		$pssdErr = "* field is required";
+		if ($cnt > 0){
+			$cnt -= 1;
+		}
+	} else {
+		$pssd = test_field($_POST["pssd"]);
+		$pssdErr = "";
+		$cnt += 1;
+	}
+	
+	if (empty($_POST["pwd"])){
+		$pwdErr = "* field is required";
+		if ($cnt > 0){
+			$cnt -= 1;
+		}
+	} else {
+		$pwd = test_field($_POST["pwd"]);
+		$pwdErr = "";
+		$cnt += 1;
+		if ($pssd != $pwd){
+			$pwdErr = "* passwords do not match";
+			if ($cnt > 0){
+				$cnt -= 1;
+			}		
+		}
+	}
+	
+	if ($cnt == 5){
+		$conn = new mysqli($servername,$username,$password,$dbname);
+		//check connection_aborted
+		if ($conn->connect_error){
+			die("Connection failed: " . $conn->connect_erro);
+		}
+		
+		$sql = "INSERT INTO customersInfo (firstname, lastname, email, password)
+		VALUES ($fname,$lname,$email,$pssd)";
+		
+		if ($conn->query($sql) === TRUE){
+			echo "New record created successfully";
+		}else {
+			echo "Error: " . $sql . "<br>" .$conn->error;
+		}
+		$username = $fname . " " . $lname;
+		$_SESSION['auth '] ="yes ";
+		$_SESSION['name ']=$username;
+		header("Location:/users/index.php ");
+		$conn->close();
+	}
+}
+	
+function test_field($data){
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}	
+	
+?>
+
 <div style="text-align: center"><h2>Create an account</h2></div>
 <hr />
 <div class="form_container">
@@ -15,24 +124,24 @@
 <legend>Personal Information</legend>
 <div class="form-group">
 <label for="accntType">Type of account </label>
-<select>
+<select name="accnt">
 <option value="select">select</option>
 <option value="supervisor">Supervisor</option>
 <option value="student">Student</option>
 </select>
-<span class="text-danger"></span>
+<span class="text-danger"><?php echo $accntErr; ?></span>
 </div>
 
 <div class="form-group">
 <label for="fname">First Name</label>
-<input type="text" class="pers_ipt" placeholder="First Name" required />
-<span class="text-danger"></span>
+<input type="text" name="fname" class="pers_ipt" placeholder="First Name" required />
+<span class="text-danger"><?php echo fnameErr; ?></span>
 </div>
 
 <div class="form-group">
 <label for="lname">Last Name</label>
-<input type="text" class="pers_ipt" placeholder="Last Name" required />
-<span class="text-danger"></span>
+<input type="text" name="lname" class="pers_ipt" placeholder="Last Name" required />
+<span class="text-danger"><?php echo lnameErr; ?></span>
 </div>
 
 <div class="form-group">
@@ -41,16 +150,15 @@
 <?php
 $months = array("Month","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 for($lcv = 0; $lcv < 13; $lcv++){
-echo "<option value=\"" . $months[$lcv] . "\">" . $months[$lcv] . "</option>";
+echo "<option value=\"$months[$lcv]\">$months[$lcv]</option>";
 }
 ?>
 </select>
-
 <select class="date_of_birth">
 <?php
 echo "<option>Day</option>";
 for($lcv=1; $lcv < 32; $lcv++){
-echo "<option value=\"" . $lcv ."\">" . $lcv . "</option>";
+echo "<option value=\"$lcv\">$lcv</option>";
 }
 ?>
 </select>
@@ -61,7 +169,7 @@ echo "<option>Year</option>";
 $currDate = date("Y");
 $cdate = (int)$currDate;
 for($lcv= $cdate - 100; $lcv < $cdate; $lcv++){
-echo "<option value=\"" . $lcv . "\">" . $lcv . "</option>";
+echo "<option value=\"$lcv\">$lcv</option>";
 }
 ?>
 </select>
@@ -69,8 +177,8 @@ echo "<option value=\"" . $lcv . "\">" . $lcv . "</option>";
 </div>
 
 <div class="form-group">
-<label for="lname">Gender</label>
-<select>
+<label for="gender">Gender</label>
+<select name="gender">
 <option value="select">Gender</option>
 <option value="male">Male</option>
 <option value="female">Female</option>
@@ -79,14 +187,14 @@ echo "<option value=\"" . $lcv . "\">" . $lcv . "</option>";
 </div>
 
 <div class="form-group">
-<label for="sAdr">Street Address</label>
-<input type="text" class="pers_ipt" placeholder="Street Address" />
+<label for="adr">Address</label>
+<input type="text" name="adr" class="pers_ipt" placeholder="Street Address" />
 <span class="text-danger"></span>
 </div>
 
 <div class="form-group">
-<label for="sAdr">Address (line 2)</label>
-<input type="text" class="pers_ipt" placeholder="Address" />
+<label for="addr">Address (line 2)</label>
+<input type="text" name="addr" class="pers_ipt" placeholder="Address" />
 <span class="text-danger"></span>
 </div>
 
@@ -108,18 +216,18 @@ echo "<option value=\"" . $lcv . "\">" . $lcv . "</option>";
 <input type="text"  placeholder="city" />
 </td>
 <td>
-<select>
+<select name="state">
 <?php
 $states = array("State","Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","District Of Columbia","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming");
 $sttes = array("select","AL","AK","AZ");
 for ($lcv = 0; $lcv < 53; $lcv++){
-echo "<option value=\"" . $states[$lcv] . "\">" .  $states[$lcv] . "</option>";
+echo "<option value=\"$states[$lcv]\"> $states[$lcv]</option>";
 }
 ?>
 </select>
 </td>
 <td>
-<input type="number" maxlength="5" />
+<input name="zipcode" type="number" maxlength="5" />
 </td>
 </tr>
 <tr>
@@ -143,20 +251,20 @@ echo "<option value=\"" . $states[$lcv] . "\">" .  $states[$lcv] . "</option>";
 
 <div class="form-group">
 <label for="email">Email</label>
-<input type="text" class="accnt_ipt" placeholder="Email (someone@example.com)" />
-<span class="text-danger"></span>
+<input type="text" name="email" class="accnt_ipt" placeholder="Email (someone@example.com)" />
+<span class="text-danger"><?php echo $emailErr; ?></span>
 </div>
 
 <div class="form-group">
 <label for="password">Password</label>
-<input type="password" class="accnt_ipt" placeholder="Password" />
-<span class="text-danger"></span>
+<input type="password" name="pssd" class="accnt_ipt" placeholder="Password" />
+<span class="text-danger"><?php echo $pssdErr; ?></span>
 </div>
 
 <div class="form-group">
 <label for="password">Password</label>
-<input type="password" class="accnt_ipt" placeholder="re-enter password" />
-<span class="text-danger"></span>
+<input type="password" name="pwd" class="accnt_ipt" placeholder="re-enter password" />
+<span class="text-danger"><?php echo $pwdErr; ?></span>
 </div>
 </fieldset>
 <div class="text-center">
