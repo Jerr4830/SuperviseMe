@@ -33,6 +33,6 @@ session_start();
 </div>
 </div>
 </nav>
-
+<?php echo $_SESSION['result ']; ?>
 </body>
 </html>

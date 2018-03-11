@@ -20,6 +20,7 @@ $cnt = 0;
 $servername = "localhost";
 $username = "root";
 $password = "rasp87";
+$dbname = "Customers";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		
@@ -85,25 +86,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 	
 	if ($cnt == 5){
-		$conn = new mysqli($servername,$username,$password,$dbname);
+		$conn = mysql_connect($servername,$username,$password) or die ("unable to connect");
 		//check connection_aborted
-		if ($conn->connect_error){
-			die("Connection failed: " . $conn->connect_erro);
-		}
 		
-		$sql = "INSERT INTO customersInfo (firstname, lastname, email, password)
-		VALUES ($fname,$lname,$email,$pssd)";
-		
-		if ($conn->query($sql) === TRUE){
-			echo "New record created successfully";
-		}else {
-			echo "Error: " . $sql . "<br>" .$conn->error;
-		}
+		$tst = "CREATE TABLE temp( tid INT NOT NULL AUTO_INCREMENT, title VARCHAR(50), PRIMARY KEY (tid));";
+		$sql = "INSERT INTO customers_info ".
+		"(first_name, last_name, username, password) ".
+		"VALUES "."('$fname','$lname','$email',md5('$pssd'))";
+		mysql_select_db($dbname);
+		$res = mysql_query($sql,$conn);
+		if (! $res){
+			die ("couldn't execute query");
+		}		
 		$username = $fname . " " . $lname;
 		$_SESSION['auth '] ="yes ";
 		$_SESSION['name ']=$username;
+		$_SESSION['result '] = $result;
 		header("Location:/users/index.php ");
-		$conn->close();
+		mysql_close($conn);
 	}
 }
 	
@@ -135,13 +135,13 @@ function test_field($data){
 <div class="form-group">
 <label for="fname">First Name</label>
 <input type="text" name="fname" class="pers_ipt" placeholder="First Name" required />
-<span class="text-danger"><?php echo fnameErr; ?></span>
+<span class="text-danger"><?php echo $fnameErr; ?></span>
 </div>
 
 <div class="form-group">
 <label for="lname">Last Name</label>
 <input type="text" name="lname" class="pers_ipt" placeholder="Last Name" required />
-<span class="text-danger"><?php echo lnameErr; ?></span>
+<span class="text-danger"><?php echo $lnameErr; ?></span>
 </div>
 
 <div class="form-group">

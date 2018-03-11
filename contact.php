@@ -11,32 +11,46 @@
 <body>
 <?php
 $email = $emailErr = $message = $messageErr = "";
-$emailChck = false;
-$mesgChck = false;
+$chck = 0;
+$snt = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if (empty($_POST["email"])){
 		$emailErr = "field is required";
-		$emailChck = false;
+		if ($chck > 0){
+			$chck -=1;
+		}
 	} else {
 		$email = test_input($_POST["email"]);
-		$emailChck = true;
+		$chck += 1;
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$emailErr = "* Invalid email format";
-			$emailChck = false;
+			if ($chck > 0){
+				$chck -=1;
+			}
 		}
 	}
 	
 	if (empty($_POST["message"])){
 		$messageErr = "* field is required";
-		$mesgChck = false;
+		if ($chck > 0){
+			$chck -=1;
+		}
 	} else {
 		$message = test_input($_POST["message"]);
-		$mesgChck = true;
+		$chck += 1;
 	}
 	
-	if (($emailChck == true) && ($mesgChck == true)){
-		sendMessage($email,$message);
+	if ($chck == 2){
+		$to = "jaspeedx785@gmail.com";
+		$subject = "supervise me website";
+		$headers = "From:  $email\r\n";
+		$headers .= "To: $to\r\n";
+		if(Mail($to,$subject,$message,$headers)){
+			$snt = "message sent";
+		} else {
+			$snt = "message not sent";
+		}	
 	}
 }
 
@@ -47,13 +61,6 @@ function test_input($data){
 	return $data;
 }
 
-function sendMessage($mail, $mesg){
-	$to = "jaspeedx785@gmail.com";
-	$subject = "SuperviseMe website";	
-	$headers = "From: " . $mail ."\r\n";
-	
-	mail($to,$subject,$mesg,$headers);
-}
 ?>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -69,13 +76,13 @@ function sendMessage($mail, $mesg){
 </div>
 <div class="navbar-collapse collapse" id="myNavbar">
 <ul class="nav navbar-nav">
-<li><a href="#" style="color:lightseagreen">Home</a></li>
-<li><a href="#" style="color:lightseagreen">About</a></li>
-<li><a href="#" style="color:lightseagreen">Contact</a></li>
+<li><a href="/index.html" style="color:lightseagreen">Home</a></li>
+<li><a href="/about.html" style="color:lightseagreen">About</a></li>
+<li><a href="/contact.php" style="color:lightseagreen">Contact</a></li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
-<li><a href="#" style="color:lightseagreen">Sign up</a></li>
-<li><a href="#" style="color:lightseagreen">Log in</a></li>
+<li><a href="/forms/register.php" style="color:lightseagreen">Sign up</a></li>
+<li><a href="/forms/login.php" style="color:lightseagreen">Log in</a></li>
 </ul>
 </div>
 </div>
@@ -96,8 +103,9 @@ function sendMessage($mail, $mesg){
 <textarea name="message" rows="8" wrap="hard" placeholder="Message..." class="form-control"></textarea>
 <span class="text-danger"><?php echo $messageErr;?></span>
 </div>
-<div class="col-xs-2" style="margin:0 auto;text-align: center">
+<div style="margin:0 auto;text-align: center">
 <button type="submit" class="btn btn-default" style="color:lightseagreen;background-color:black;border:1px solid lightseagreen;padding:10px;width:100%">Send</button>
+<span><?php echo $snt;?></span>
 </div>
 </form>
 </div>
