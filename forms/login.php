@@ -61,7 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 				$sql = "SELECT first_name, last_name FROM customers WHERE username='$email'";
 				$res = myql_query($sql,$conn);
 				$row = mysql_fetch_assoc($res);  
-				$_SESSION['name '] = $row["first_name"] . " " . $row["last_name"];
+				$_SESSION['fname '] = $row["first_name"];
+				$_SESSION['lname '] = $row["last_name"];
+				$_SESSION['username '] = $email;
 				header("Location:/users/index.html");
 			} else {
 				$pssdErr = "Incorrect password! Please try again";
@@ -122,6 +124,9 @@ function test_field($data){
 </div>
 <div class="text-center">
 <input type="submit" value="log in" class="btn btn-default" style="width:250px; background-color:black;color:lightseagreen;border:1px solid lightseagreen" />
+</div>
+</form>
+<div class="text-center"><a href="/forms/register.php">Create an account</a></div>
 </div>
 </body>
 </html>

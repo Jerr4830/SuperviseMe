@@ -19,13 +19,20 @@ session_start();
 <span class="icon-bar" style="background-color:lightseagreen"></span>
 <span class="icon-bar" style="background-color:lightseagreen"></span>
 </button>
-<a href="/users/index.html" id="user_name" class="navbar-brand" style="color:lightseagreen"><?php echo $_SESSION["name "]; ?></a>
+<a href="/users/index.html" id="user_name" class="navbar-brand" style="color:lightseagreen"><?php echo $_SESSION["fname "] . " " . $_SESSION["lname "]; ?></a>
 </div>
 <div class="navbar-collapse collapse" id="myNavbar">
 <ul class="nav navbar-nav">
 <li><a href="/users/index.html" style="color:lightseagreen">Home</a></li>
-<li><a style="color:lightseagreen">Videos</a></li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color:lightseagreen">Videos</a>
+<div class="dropdown-menu">
+<a class="dropdown-item">Upload Videos</a>
+<a class="dropdown-item">View Videos</a>
+</div>
+</li>
 <li><a style="color:lightseagreen">Contact</a></li>
+<li><a style="color:lightseagreen">Profile</a></li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
 <li><a href="user_logout.php" style="color:lightseagreen"> <span class="glyphicon glyphicon-log-out"></span> log out</a></li>
