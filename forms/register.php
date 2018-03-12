@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	// Address	
 	if ((!empty($_POST["adr"])) || (!empty($_POST["city"])) || ($_POST["state"] != "select") || (strlen($_POST["zipcode"]) == 5 && ctype_digit($_POST["zipcode"])) ){
 		//check if address field is empty
-		if(empty($_POST["adr"]){
+		if(empty($_POST["adr"])){
 			$adrErr = "* Please enter a valid address";
 			$cnt = 0;
 		} else {
@@ -168,8 +168,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		//check connection_aborted		
 		
 		$sql = "INSERT INTO customers_info ".
-		"(account,first_name, last_name, username, password,dob_month,dob_day,dob_year,gender,Address,scndAddress,City,State,Zipcode,) ".
-		"VALUES "."('$accnt','$fname','$lname','$email',md5('$pssd'),'$dob_month','$dob_day','$dob_year','$gender','$adr',$addr,'$city','$state','$zipcode')";
+		"(account,first_name,last_name,username,password,dob_month,dob_day,dob_year,gender,Address,scndAddress,City,State,Zipcode) ".
+		"VALUES "."('$accnt','$fname','$lname','$email',md5('$pssd'),'$dob_month','$dob_day','$dob_year','$gender','$adr','$addr','$city','$state','$zipcode')";
 		mysql_select_db($dbname);
 		$res = mysql_query($sql,$conn);
 		if (! $res){

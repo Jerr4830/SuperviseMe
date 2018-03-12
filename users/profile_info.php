@@ -159,8 +159,10 @@ echo "<option value=\"$lcv\">$lcv</option>";
 <?php
 if ($gender == "male"){
 	echo "<option>Gender</option><option selected>Male</option><option>Female</option>";
+} elseif ($gender == "female"){
+	echo "<option>Gender</option><option>Male</option><option selected>Female</option>";
 } else {
-	echo "<option>Gender</option><option selected>Male</option><option selected>Female</option>";
+	echo "<option selected>Gender</option><option>Male</option><option>Female</option>";
 }
 ?>
 </div>

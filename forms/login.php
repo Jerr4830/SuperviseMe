@@ -58,13 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$result2 = mysql_query($sql,$conn) or die ("Could not execute query");
 			$num2 =mysql_num_rows($result2);
 			if ($num2 > 0){
-				$sql = "SELECT first_name, last_name FROM customers WHERE username='$email'";
-				$res = myql_query($sql,$conn);
-				$row = mysql_fetch_assoc($res);  
-				$_SESSION['fname '] = $row["first_name"];
-				$_SESSION['lname '] = $row["last_name"];
+				$sql = "SELECT first_name, last_name FROM customers_info WHERE username='$email'";
+				$res = mysql_query($sql,$conn) or die("Could not get data");
+				$row = mysql_fetch_array($res,MYSQL_ASSOC);  
+				$_SESSION['fname '] = $row['first_name'];
+				$_SESSION['lname '] = $row['last_name'];
 				$_SESSION['username '] = $email;
-				header("Location:/users/index.html");
+				mysql_close($conn);
+				header("Location:/users/index.php ");
+				
 			} else {
 				$pssdErr = "Incorrect password! Please try again";
 			}
@@ -109,8 +111,8 @@ function test_field($data){
 <br>
 <br>
 <div class="container" style="background-color: gray; padding:10px;">
-<div style="text-align: center"><h2>Log in</h2></div>
-<hr />
+<div style="text-align: center; color:lightseagreen;"><h2>Log in</h2></div>
+<hr style="background-color:lightseagreen"/>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 <div class="form-group"
 <label for="email" style="color:lightseagreen">Email</label>
@@ -119,7 +121,7 @@ function test_field($data){
 </div>
 <div class="form-group">
 <label for="password" style="color:lightseagreen">Password</label>
-<input type="password" class="form-control" placeholder="Enter password ( ****)" />
+<input type="password" name="password" class="form-control" placeholder="Enter password ( ****)" />
 <span class="text-danger"><?php echo $pssdErr; ?></span>
 </div>
 <div class="text-center">

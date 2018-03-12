@@ -32,7 +32,7 @@ session_start();
 </div>
 </li>
 <li><a style="color:lightseagreen">Contact</a></li>
-<li><a style="color:lightseagreen">Profile</a></li>
+<li><a href="/users/profile_info.php" style="color:lightseagreen">Profile</a></li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
 <li><a href="user_logout.php" style="color:lightseagreen"> <span class="glyphicon glyphicon-log-out"></span> log out</a></li>

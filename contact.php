@@ -44,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if ($chck == 2){
 		$to = "jaspeedx785@gmail.com";
 		$subject = "supervise me website";
-		$headers = "From:  $email\r\n";
-		$headers .= "To: $to\r\n";
-		if(Mail($to,$subject,$message,$headers)){
+		$headers = "From:  $email" . "\r\n" .
+		"To: $to" . "\r\n";
+		if(mail($to,$subject,$message,$headers)){
 			$snt = "message sent";
 		} else {
 			$snt = "message not sent";
