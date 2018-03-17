@@ -10,6 +10,35 @@ session_start();
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<?php
+$servername = "localhost"
+$username = "root"
+$password = "rasp87";
+$dbname = "customers_videos";
+
+$conn = mysql_connect($servername,$username,$password);
+
+$target_dir = "videos/";
+$target_file = $target_dir . basename($_FILES["fileupload"]["name"]);
+$uploadOk = 1;
+$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+// check if file is an actual video file
+
+
+// Allow certain file formats
+
+if ($fileType != "mp4" && $fileType != "ogg" && $fileType != "webm"){
+	echo "Sorry, only mp4, ogg and webm files allowed.";
+	$uploadOk = 0;
+}
+
+// check if it is ok to upload file
+if ($uploadOk != 0){
+	if (move_uploaded_file($_FILES["fileupload"]["tmp_name"],$target_file)){
+		
+
+?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
 <div class="container">
 <div class="navbar-header">
@@ -27,8 +56,8 @@ session_start();
 <li class="nav-item dropdown">
 <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color:lightseagreen">Videos</a>
 <div class="dropdown-menu">
-<li><a href="/users/upload_video.php" class="dropdown-item">Upload Videos</a></li>
-<li><a class="dropdown-item">View Videos</a></li>
+<li><a href="/users/upload_video.php" class="dropdown-item" style="lightseagreen">Upload Videos</a></li>
+<li><a class="dropdown-item" style="color:lightseagreen">View Videos</a></li>
 </div>
 </li>
 <li><a style="color:lightseagreen">Contact</a></li>
@@ -40,6 +69,10 @@ session_start();
 </div>
 </div>
 </nav>
-<?php echo $_SESSION['result ']; ?>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+Select video to upload:
+<input type="file" name="fileupload" id="fileupload">
+<input type="submit" value="Upload video" name="submit">
+</form>
 </body>
 </html>

@@ -16,6 +16,10 @@ $accnt = $fname = $lname = $dob_day = $dob_month = $dob_year = "";
 $gender = $sadr = $adr = $addr = $city = $state = $zipcode = "";
 $email = $pssd = "";
 
+$ufname = $ulname = $udob_day = $udob_month = $udob_year = "";
+u$gender = $uadr = $uaddr = $ucity = $ustate = $uzipcode = "";
+$uemail = $upssd = "";
+
 $fnameErr = $lnameErr = $bdayErr = $genderErr = $adrErr = $cityErr = $stateErr = $zipcodeErr = "";
 $emailErr = $pssdErr = ""; 
 // info to access database
@@ -27,10 +31,12 @@ $dbname = "Customers";
 $email = $_SESSION['username '];
 
 $conn = mysql_connect($servername,$username,$pass) or die ("Could not connect");
+mysql_select_db($dbname);
 $sql = "SELECT * FROM customers_info where username='$email'";
 
-$result = myql_query($sql,$conn);
+$result = mysql_query($sql,$conn);
 $rows = mysql_fetch_assoc($result);
+$user_id = $rows["ID"];
 $accnt = $rows["account"];
 $fname = $rows["first_name"];
 $lname = $rows["last_name"];
@@ -43,6 +49,16 @@ $addr = $rows["scndAddress"];
 $city = $rows["City"];
 $state = $rows["State"];
 $zipcode = $rows["Zipcode"];
+
+// close the connection if user pressed cancel button
+if (isset($_POST["cancel"])){
+	mysql_close($conn);
+	header("Location: /users/index.php");
+}
+
+if (isset($_POST["save"])){
+	mysql_select_db($dbname);
+	
 
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -62,8 +78,8 @@ $zipcode = $rows["Zipcode"];
 <li class="nav-item dropdown">
 <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color:lightseagreen">Videos</a>
 <div class="dropdown-menu">
-<a class="dropdown-item">Upload Videos</a>
-<a class="dropdown-item">View Videos</a>
+<a href="/users/upload_video.php" class="dropdown-item" style="color:lightseagreen">Upload Videos</a>
+<a class="dropdown-item" style="color:lightseagreen">View Videos</a>
 </div>
 </li>
 <li><a style="color:lightseagreen">Contact</a></li>
@@ -250,7 +266,7 @@ for ($lcv = 0; $lcv < 53; $lcv++){
 </fieldset>
 <div class="text-center">
 <input type="submit" value="save" class="btn btn-md" style="color:lightseagreen;border:1px solid lightseagreen; border-radius:3px; background-color:black;padding:10px;width:100px;" />
-<a href="/users/index.php" class="btn btn-md" style="text-decoration:none;color:lightseagreen;border:1px solid lightseagreen;border-radius:3px;background-color:black;padding:10px;width:100px;">cancel</a>
+<a href="/users/close.php" class="btn btn-md" style="text-decoration:none;color:lightseagreen;border:1px solid lightseagreen;border-radius:3px;background-color:black;padding:10px;width:100px;">cancel</a>
 </div>
 </form>
 </div>

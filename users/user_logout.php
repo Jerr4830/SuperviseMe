@@ -10,6 +10,7 @@ session_unset();
 //destroy the session
 session_destroy();
 
+// return to the home page
 header("Location:/index.html ");
 ?>
 </body>

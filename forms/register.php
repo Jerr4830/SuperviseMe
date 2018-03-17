@@ -178,8 +178,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION['fname '] = $fname; 
 		$_SESSION['lname '] = $lname;
 		$_SESSION['username '] = $email;
-		header("Location:/users/index.php ");
 		mysql_close($conn);
+		header("Location:/users/index.php ");		
 	}
 }
 	
