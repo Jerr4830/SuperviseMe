@@ -11,10 +11,21 @@
 <body>
 <?php
 $email = $emailErr = $message = $messageErr = "";
+$name = $nameErr = "";
 $chck = 0;
 $snt = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
+	if (empty($_POST["fname"])){
+		$nameErr = "* field is required";
+		if ($chck > 0){
+			$chck -=1;
+		}
+	} else {
+		$name = test_input($_POST["fname"]);
+		$nameErr = "";
+		$chk += 1;
+	}
 	if (empty($_POST["email"])){
 		$emailErr = "field is required";
 		if ($chck > 0){
@@ -41,11 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$chck += 1;
 	}
 	
-	if ($chck == 2){
+	if ($chck == 3){
 		$to = "jaspeedx785@gmail.com";
 		$subject = "supervise me website";
-		$headers = "From:  $email" . "\r\n" .
-		"To: $to" . "\r\n";
+		$headers = "From: " . $email . "\r\n";
+		$headers .= "Name: " . $name . "\r\n";
 		if(mail($to,$subject,$message,$headers)){
 			$snt = "message sent";
 		} else {
@@ -93,6 +104,11 @@ function test_input($data){
 </div>
 <div class="container">
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+<div class="form-group">
+<label for="fname">Name</label>
+<input type="text" class="form-control" id="fname" placeholder="Name" name="fname" />
+<span class="text-danger"><?php echo $nameErr;?></span>
+</div>
 <div class="form-group">
 <label for="email">Email</label>
 <input type="email" class="form-control" id="email" placeholder="Email" name="email" />
