@@ -56,8 +56,8 @@ if (isset($_POST["cancel"])){
 	header("Location: /users/index.php");
 }
 
-if (isset($_POST["save"])){
-	mysql_select_db($dbname);
+//if (isset($_POST["save"])){
+//	mysql_select_db($dbname);
 	
 
 ?>
@@ -91,161 +91,11 @@ if (isset($_POST["save"])){
 </div>
 </div>
 </nav>
-<div style="text-align: center"><h2>Create an account</h2></div>
-<hr />
+
 <div class="form_container">
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 <fieldset>
 <legend>Personal Information</legend>
-<div class="form-group">
-<label for="accntType">Type of account </label>
-<select name="accnt" disabled>
-<?php
-if ($accnt == "supervisor"){
-	echo "<option>select</option><option selected>Supervisor</option><option>Student</option>";
-} else {
-	echo "<option>select</option><option>Supervisor</option><option selected>Student</option>";
-}
-?>
-</select>
-<span class="text-danger"><?php echo $accntErr; ?></span>
-</div>
-
-<div class="form-group">
-<label for="fname">First Name</label>
-<input type="text" name="fname" class="pers_ipt" placeholder="<?php echo $fname; ?>" required />
-<span class="text-danger"><?php echo $fnameErr; ?></span>
-</div>
-
-<div class="form-group">
-<label for="lname">Last Name</label>
-<input type="text" name="lname" class="pers_ipt" placeholder="<?php echo $lname; ?>" required />
-<span class="text-danger"><?php echo $lnameErr; ?></span>
-</div>
-
-<div class="form-group">
-<table>
-<tr>
-<td><label>Birthday </label></td>
-<td>
-<select name="bd_month" class="date_of_birth">
-<?php
-$months = array("Month","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-for($lcv = 0; $lcv < 13; $lcv++){
-echo "<option value=\"$months[$lcv]\">$months[$lcv]</option>";
-}
-?>
-</select>
-</td>
-<td>
-<select name="bd_day" class="date_of_birth">
-<?php
-echo "<option>Day</option>";
-for($lcv=1; $lcv < 32; $lcv++){
-echo "<option value=\"$lcv\">$lcv</option>";
-}
-?>
-</select>
-</td>
-<td>
-<select name="bd_year" class="date_of_birth">
-<?php
-echo "<option>Year</option>";
-$currDate = date("Y");
-$cdate = (int)$currDate;
-for($lcv= $cdate - 100; $lcv < $cdate; $lcv++){
-echo "<option value=\"$lcv\">$lcv</option>";
-}
-?>
-</select>
-</td>
-</tr>
-<tr>
-<td></td>
-<td><span class="text-danger"></span></td>
-<td><span class="text-danger"></span></td>
-<td><span class="text-danger"></span></td>
-</tr>
-</table>
-</div>
-
-<div class="form-group">
-<label for="gender">Gender</label>
-<select name="gender" disabled>
-<?php
-if ($gender == "male"){
-	echo "<option>Gender</option><option selected>Male</option><option>Female</option>";
-} elseif ($gender == "female"){
-	echo "<option>Gender</option><option>Male</option><option selected>Female</option>";
-} else {
-	echo "<option selected>Gender</option><option>Male</option><option>Female</option>";
-}
-?>
-</div>
-
-<div class="form-group">
-<label for="adr">Address</label>
-<input type="text" name="adr" class="pers_ipt" placeholder="<?php echo $adr; ?>" />
-<span class="text-danger"></span>
-</div>
-
-<div class="form-group">
-<label for="addr">Address (line 2)</label>
-<input type="text" name="addr" class="pers_ipt" placeholder="<?php echo $addr; ?>" />
-<span class="text-danger"></span>
-</div>
-
-<div class="form-group">
-<table style="width:90%;">
-<tr>
-<td>
-<label for="city">City</label>
-<td>
-</td>
-<label for="state">State</label>
-</td>
-<td>
-<label for="city">Zip Code</label>
-</td>
-</tr>
-<tr>
-<td>
-<input type="text" name="city" placeholder="<?php echo $city; ?>" />
-</td>
-<td>
-<select name="state">
-<?php
-$states = array("State","Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","District Of Columbia","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming");
-$sttes = array("select","AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY");
-for ($lcv = 0; $lcv < 53; $lcv++){
-	$tmp = "" . $lcv;
-	if ($tmp == $state){
-		echo "<option value=\"$sttes[$lcv]\" selected>$states[$lcv]</option>";
-	} else {
-		echo "<option value=\"$sttes[$lcv]\"> $states[$lcv]</option>";
-	}
-}
-?>
-</select>
-</td>
-<td>
-<input name="zipcode" type="number" maxlength="5" placeholder="<?php echo $zipcode; ?>" />
-</td>
-</tr>
-<tr>
-<td>
-<span class="text-danger"><?php echo $cityErr; ?></span>
-</td>
-<td>
-<span class="text-danger"><?php echo $stateErr; ?></span>
-</td>
-<td>
-<span class="text-danger"><?php echo $zipcodeErr; ?></span>
-</td>
-</tr>
-</table>
-</div>
-
 
 </fieldset>
 <fieldset>

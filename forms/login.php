@@ -84,51 +84,35 @@ function test_field($data){
 }
 
 ?>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-<div class="container">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-<span class="sr-only">Toggle navigation</span>
-<span class="icon-bar" style="background-color:lightseagreen"></span>
-<span class="icon-bar" style="background-color:lightseagreen"></span>
-<span class="icon-bar" style="background-color:lightseagreen"></span>
-</button>
-<a href="/index.html" class="navbar-brand" style="color:lightseagreen">SuperviseMe</a>
-</div>
-<div class="navbar-collapse collapse" id="myNavbar">
-<ul class="nav navbar-nav">
-<li><a href="/index.html" style="color:lightseagreen">Home</a></li>
-<li><a href="about.html" style="color:lightseagreen">About</a></li>
-<li><a href="contact.html" style="color:lightseagreen">Contact</a></li>
-</ul>
-<ul class="nav navbar-nav navbar-right">
-<li><a href="/forms/register.php" style="color:lightseagreen">Sign up</a></li>
-<li><a href="/forms/login.php" style="color:lightseagreen">Log in</a></li>
-</ul>
-</div>
-</div>
-</nav>
+
 <br>
 <br>
-<div class="container" style="background-color: gray; padding:10px;">
-<div style="text-align: center; color:lightseagreen;"><h2>Log in</h2></div>
-<hr style="background-color:lightseagreen"/>
+<div class="container" style="padding:10px;width:400px;height:400px;margin-top:15px;border:1px solid black;border-radius:10px;box-shadow:5px 5px gray;background-color:black;color:lightseagreen">
+<div style="text-align: center; padding:10px;"><h2>Log in</h2></div>
+<br>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-<div class="form-group"
-<label for="email" style="color:lightseagreen">Email</label>
-<input type="email" class="form-control" name="email" placeholder="someone@example.com" />
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon" style="color:lightseagreen;background-color:black;"><i class="glyphicon glyphicon-user"></i></span>
+<input type="email" class="form-control" name="email" placeholder="Email" />
+</div>
 <span class="text-danger"><?php echo $emailErr; ?></span>
 </div>
+<br>
 <div class="form-group">
-<label for="password" style="color:lightseagreen">Password</label>
-<input type="password" name="password" class="form-control" placeholder="Enter password ( ****)" />
+<div class="input-group">
+<span class="input-group-addon" style="color:lightseagreen;background-color:black;"><i class="glyphicon glyphicon-lock"></i></span>
+<input name="password" class="form-control" placeholder="Password">
+</div>
 <span class="text-danger"><?php echo $pssdErr; ?></span>
 </div>
+<br>
 <div class="text-center">
 <input type="submit" value="log in" class="btn btn-default" style="width:250px; background-color:black;color:lightseagreen;border:1px solid lightseagreen" />
 </div>
 </form>
-<div class="text-center"><a href="/forms/register.php">Create an account</a></div>
+<br>
+<div class="text-center"><a style="color:lightseagreen" href="/forms/forgot.php">Forgot password?</a></div>
 </div>
 </body>
 </html>
