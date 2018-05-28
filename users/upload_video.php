@@ -3,7 +3,7 @@ session_start();
 ?>
 <html>
 <head>
-<title>Home</title>
+<title>Upload Video</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -11,32 +11,72 @@ session_start();
 </head>
 <body>
 <?php
-$servername = "localhost"
-$username = "root"
-$password = "rasp87";
-$dbname = "customers_videos";
-
-$conn = mysql_connect($servername,$username,$password);
-
 $target_dir = "videos/";
 $target_file = $target_dir . basename($_FILES["fileupload"]["name"]);
 $uploadOk = 1;
 $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+$upError = "";
 
-// check if file is an actual video file
-
+// check if file already exists
+if (file_exists($target_file)){
+	$upError = "File already exists";
+	$uploadOk = 0;
+}
 
 // Allow certain file formats
-
 if ($fileType != "mp4" && $fileType != "ogg" && $fileType != "webm"){
-	echo "Sorry, only mp4, ogg and webm files allowed.";
+	$upError =  "Sorry, only mp4, ogg and webm files allowed.";
 	$uploadOk = 0;
 }
 
 // check if it is ok to upload file
 if ($uploadOk != 0){
 	if (move_uploaded_file($_FILES["fileupload"]["tmp_name"],$target_file)){
+		$xmlDoc = new DOMDocument();
+		$xmlDoc->load("db/library.xml");
 		
+		$video = $xmlDoc->createElement( "video" );
+		
+		
+		// username of customer that uploaded the file
+		$name = $xmlDoc->createElement( "name" );
+		$name->appendChild( $xmlDoc->createTextNode($_SESSION['username ']));
+		$video->appendChild($name);
+		
+		// path to file uploaded
+		$path = $xmlDoc->createElement( "file" );
+		$path->appendChild( $xmlDoc->createTextNode($target_file));
+		$video->appendChild($path);
+		
+		// date the file was uploaded
+		$fDate = $xmlDoc->createElement( "uploadDate" );
+		// day
+		$fDay = $xmlDoc->createElement( "day" );
+		$fDay->appendChild( $xmlDoc->createTextNode(date("d"));
+		$fDate->appendChild($fDay);
+		// month
+		$fMonth = $xmlDoc->createElement( "month" );
+		$fMonth->appendChild( $xmlDoc->createTextNode(date("m"));
+		$fDate->appendChild($fMonth);
+		// year
+		$fYear = $xmlDoc->createElement( "year" );
+		$fYear->appendChild( $xmlDoc->createTextNode(date("Y"));
+		$fDate->appendChild($fYear);
+		$video.appendChild($fDate);
+		
+		// add new node to document
+		$videos = $xmlDoc->getElementsByTagName( "videos" );
+		$videos->appendChild($video);
+		
+		$xmlDoc->saveXML();
+		$xmlDoc->save("db/library.xml");
+		
+		
+		$upError = "Uploaded";
+		
+		header("Location:/users/index.php ");
+	}
+}		
 
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -73,6 +113,7 @@ if ($uploadOk != 0){
 Select video to upload:
 <input type="file" name="fileupload" id="fileupload">
 <input type="submit" value="Upload video" name="submit">
+<span><?php echo $upError; ?></span>
 </form>
 </body>
 </html>
