@@ -64,9 +64,16 @@ if ($uploadOk != 0){
 		$fDate->appendChild($fYear);
 		$video.appendChild($fDate);
 		
+
+		// add comments node to documents
+		$comments = $xml->createElement( "comments" );
+		$video.appendChild($comments);
+
 		// add new node to document
 		$videos = $xmlDoc->getElementsByTagName( "videos" );
 		$videos->appendChild($video);
+
+		
 		
 		$xmlDoc->saveXML();
 		$xmlDoc->save("db/library.xml");
